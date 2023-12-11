@@ -5,7 +5,7 @@ import { FC } from "react";
 interface IPasswordInputProps {
   name: string;
   placeholder: string;
-  dependencies: NamePath[];
+  dependencies?: NamePath[];
 }
 
 const PasswordInput: FC<IPasswordInputProps> = ({
