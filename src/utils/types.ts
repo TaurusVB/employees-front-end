@@ -11,3 +11,10 @@ export type User = {
   email: string;
   name: string;
 };
+
+export type ErrorWithMessage = {
+  status: number;
+  data: {
+    message: string;
+  };
+};
