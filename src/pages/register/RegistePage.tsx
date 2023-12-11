@@ -29,9 +29,9 @@ const RegisterPage = () => {
           </CustomButton>
         </Form>
         <Space direction="vertical" size="large">
-          <Typography>
+          <Typography.Text>
             Already have an account? <Link to={Paths.login}>Login.</Link>
-          </Typography>
+          </Typography.Text>
         </Space>
       </Card>
     </Row>
