@@ -27,17 +27,17 @@ const PasswordInput: FC<IPasswordInputProps> = ({
             }
 
             if (name === "confirmPassword") {
-              if (!value || getFieldValue("password") !== value) {
+              if (!value || getFieldValue("password") === value) {
                 return Promise.resolve();
               }
-
-              return Promise.reject(new Error("Passwords must match!"));
+              return Promise.reject(new Error("Пароли должны совпадать"));
             } else {
               if (value.length < 6) {
                 return Promise.reject(
-                  new Error("Passwird must contain at least 6 characters")
+                  new Error("Пароль должен быть длиньше 6-ти символов")
                 );
               }
+
               return Promise.resolve();
             }
           },

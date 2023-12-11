@@ -10,15 +10,8 @@ const LoginPage = () => {
     <Row align="middle" justify="center">
       <Card title="Sign in" style={{ width: "30rem" }}>
         <Form onFinish={() => {}}>
-          <CustomInput
-            type="email"
-            name="email"
-            placeholder="example@example.com"
-          />
-          <PasswordInput
-            name="password"
-            placeholder="Password should consist of at least 6 characters"
-          />
+          <CustomInput type="email" name="email" placeholder="Email" />
+          <PasswordInput name="password" placeholder="Password" />
           <CustomButton type="primary" htmlType="submit">
             Login
           </CustomButton>
