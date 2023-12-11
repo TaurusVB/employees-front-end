@@ -5,9 +5,18 @@ interface ICustomButtonProps {
   children: ReactNode;
   htmlType?: "button" | "submit" | "reset" | undefined;
   onClick?: () => void;
-  type?: "link" | "text" | "default" | "primary" | "dashed" | undefined;
+  type?:
+    | "link"
+    | "default"
+    | "text"
+    | "primary"
+    | "dashed"
+    | "ghost"
+    | undefined;
   danger?: boolean;
   loading?: boolean;
+  shape?: "default" | "circle" | "round" | undefined;
+  icon?: ReactNode;
 }
 
 const CustomButton: FC<ICustomButtonProps> = ({
@@ -17,6 +26,8 @@ const CustomButton: FC<ICustomButtonProps> = ({
   onClick,
   danger,
   loading,
+  shape,
+  icon,
 }) => {
   return (
     <Form.Item>
@@ -26,6 +37,8 @@ const CustomButton: FC<ICustomButtonProps> = ({
         danger={danger}
         htmlType={htmlType}
         type={type}
+        shape={shape}
+        icon={icon}
       >
         {children}
       </Button>
