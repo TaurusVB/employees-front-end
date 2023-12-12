@@ -4,7 +4,13 @@ import { RootState } from "../store";
 const baseQuery = fetchBaseQuery({
   baseUrl: "https://employees-back-end.onrender.com/api",
   prepareHeaders: (headers, { getState }) => {
-    const token = getState() as RootState;
+    const token =
+      (getState() as RootState).auth.user?.token ||
+      localStorage.getItem("token");
+
+    if (token && token !== null) {
+      headers.set("authorization", `Bearer ${token}`);
+    }
   },
 });
 
