@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 
 import { Paths } from "./paths";
-import HomePage from "../pages/home";
+import EmployeesPage from "../pages/employees";
 import LoginPage from "../pages/login";
 import RegisterPage from "../pages/register";
 import Layout from "../components/Layout";
@@ -13,7 +13,7 @@ export const router = createBrowserRouter([
     children: [
       {
         path: Paths.home,
-        element: <HomePage />,
+        element: <EmployeesPage />,
       },
       {
         path: Paths.login,

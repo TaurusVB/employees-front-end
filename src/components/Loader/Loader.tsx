@@ -1,15 +1,8 @@
 import { Puff } from "react-loader-spinner";
 
 import styles from "./Loader.module.css";
-import { useCurrentQuery } from "../../app/services/auth";
 
 const Loader = () => {
-  const { isLoading } = useCurrentQuery();
-
-  if (!isLoading) {
-    return null;
-  }
-
   return (
     <div className={styles.LoaderContainer}>
       <Puff

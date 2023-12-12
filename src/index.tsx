@@ -7,7 +7,6 @@ import { ConfigProvider, theme } from "antd";
 import { store } from "./app/store";
 import reportWebVitals from "./reportWebVitals";
 import { router } from "./utils/router";
-import Loader from "./components/LoaderForPages";
 
 import "./index.css";
 
@@ -22,7 +21,6 @@ root.render(
           algorithm: theme.darkAlgorithm,
         }}
       >
-        <Loader />
         <RouterProvider router={router} fallbackElement={<p>Loading...</p>} />
       </ConfigProvider>
     </Provider>
