@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Card, Form, Row, Space, Typography } from "antd";
 
 import CustomInput from "../../components/CustomInput";
@@ -15,9 +15,13 @@ const LoginPage = () => {
 
   const [loginUser, loginUserResult] = useLoginMutation();
 
+  const navigate = useNavigate();
+
   const onLogin = async (data: UserData) => {
     try {
       await loginUser(data).unwrap();
+
+      navigate("/");
     } catch (error) {
       const isErrorWithMess = isErrorWithMessage(error);
 
