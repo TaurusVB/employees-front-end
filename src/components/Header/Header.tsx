@@ -37,11 +37,7 @@ const Header = () => {
         </Link>
       </Space>
       {user ? (
-        <CustomButton
-          type="ghost"
-          icon={<LogoutOutlined />}
-          onClick={handleLogOut}
-        >
+        <CustomButton icon={<LogoutOutlined />} onClick={handleLogOut}>
           Log out
         </CustomButton>
       ) : (

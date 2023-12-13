@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Card, Form, Row, Space, Typography } from "antd";
 
@@ -9,13 +9,21 @@ import { Paths } from "../../utils/paths";
 import { UserData, useLoginMutation } from "../../app/services/auth";
 import { isErrorWithMessage } from "../../utils/isErrorWithMessage";
 import ErrorMessage from "../../components/ErrorMessage";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../features/auth/selectors";
 
 const LoginPage = () => {
-  const [error, setError] = useState("");
-
+  const navigate = useNavigate();
+  const user = useSelector(selectUser);
   const [loginUser, loginUserResult] = useLoginMutation();
 
-  const navigate = useNavigate();
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  }, [navigate, user]);
+
+  const [error, setError] = useState("");
 
   const onLogin = async (data: UserData) => {
     try {
