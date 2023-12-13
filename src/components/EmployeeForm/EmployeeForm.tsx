@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import { Employee } from "../../app/services/employess";
 import { Card, Form, FormInstance, Space } from "antd";
 import CustomInput from "../CustomInput";
@@ -21,6 +21,18 @@ const EmployeeForm: FC<IEmployeeFormProps<Employee>> = ({
   error,
   form,
 }) => {
+  const [updatedEmployee, setUpdatedEmployee] = useState<Employee | undefined>(
+    employee
+  );
+
+  useEffect(() => {
+    setUpdatedEmployee(employee);
+  }, [employee]);
+
+  const handleFormValuesChange = (changedValues: any, allValues: any) => {
+    setUpdatedEmployee({ ...updatedEmployee, ...changedValues });
+  };
+
   return (
     <Card
       title={title}
@@ -30,7 +42,8 @@ const EmployeeForm: FC<IEmployeeFormProps<Employee>> = ({
         form={form}
         name="employee-form"
         onFinish={onFinish}
-        initialValues={employee}
+        initialValues={updatedEmployee}
+        onValuesChange={handleFormValuesChange}
       >
         <CustomInput type="text" name="firstName" placeholder="First name" />
         <CustomInput type="text" name="lastName" placeholder="Last name" />

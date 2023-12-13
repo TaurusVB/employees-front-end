@@ -1,7 +1,8 @@
-import { PlusCircleOutlined } from "@ant-design/icons";
+import { DeleteOutlined, PlusCircleOutlined } from "@ant-design/icons";
 import { Form, Table } from "antd";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 import CustomButton from "../../components/CustomButton";
 import {
@@ -11,27 +12,33 @@ import {
 } from "../../app/services/employess";
 import type { ColumnsType } from "antd/es/table";
 import { useNavigate } from "react-router-dom";
-import { Paths } from "../../utils/paths";
 import { selectUser } from "../../features/auth/selectors";
 import EmployeeForm from "../../components/EmployeeForm";
 import ModalEmployee from "../../components/ModalEmployee";
 import { isErrorWithMessage } from "../../utils/isErrorWithMessage";
 
 import styles from "./employees.module.css";
-import toast from "react-hot-toast";
 
 const columnsType: ColumnsType<Employee> = [
   { title: "Name", dataIndex: "firstName", key: "firstName" },
   { title: "Age", dataIndex: "age", key: "age" },
   { title: "Address", dataIndex: "address", key: "address" },
+  {
+    title: "Action",
+    key: "delete",
+    render: () => <DeleteOutlined className={styles.deleteIcon} />,
+  },
 ];
 
 const EmployeesPage = () => {
-  const [isOpenModal, setIsOpenModal] = useState(false);
+  const [isOpenAddModal, setIsOpenAddModal] = useState(false);
+  const [isOpenEditModal, setIsOpenEditModal] = useState(false);
   const [error, setError] = useState("");
   const [confirmLoading, setConfirmLoading] = useState(false);
+  const [existEmployeeData, setExistEmployeeData] = useState<Employee>();
 
-  const [form] = Form.useForm();
+  const [AddForm] = Form.useForm();
+  const [EditForm] = Form.useForm();
 
   const { data, isLoading } = useGetAllEmployeesQuery();
   const [addEmployee] = useAddEmployeeMutation();
@@ -44,26 +51,34 @@ const EmployeesPage = () => {
     }
   }, [navigate, user]);
 
-  const showModal = () => {
-    setIsOpenModal(true);
+  useEffect(() => {
+    if (existEmployeeData !== null) {
+      EditForm.setFieldsValue(existEmployeeData);
+    }
+  }, [EditForm, existEmployeeData]);
+
+  const hideAddModal = () => {
+    setIsOpenAddModal(false);
+    AddForm.resetFields();
   };
 
-  const hideModal = () => {
-    setIsOpenModal(false);
+  const hideEditModal = () => {
+    setIsOpenEditModal(false);
+    EditForm.resetFields();
   };
 
   const handleAddEmployee = async () => {
     setConfirmLoading(true);
     try {
-      const data: Employee = await form.validateFields();
+      const data: Employee = await AddForm.validateFields();
 
       await addEmployee(data).unwrap();
 
-      form.resetFields();
+      AddForm.resetFields();
 
-      toast.success('Employees created successfully!')
+      toast.success("Employees created successfully!");
 
-      hideModal();
+      hideAddModal();
     } catch (error) {
       const maybeError = isErrorWithMessage(error);
 
@@ -77,25 +92,44 @@ const EmployeesPage = () => {
     }
   };
 
+  const handleEditEmployee = async () => {
+    console.log(existEmployeeData);
+  };
+
   return (
     <>
       <ModalEmployee
         confirmLoading={confirmLoading}
-        isOpenModal={isOpenModal}
-        hideModal={hideModal}
-        addEmployee={handleAddEmployee}
+        isOpenModal={isOpenAddModal}
+        hideModal={hideAddModal}
+        actionEmployee={handleAddEmployee}
       >
         <EmployeeForm
-          form={form}
+          form={AddForm}
           title="Add employee"
           onFinish={handleAddEmployee}
           error={error}
         />
       </ModalEmployee>
 
+      <ModalEmployee
+        confirmLoading={confirmLoading}
+        isOpenModal={isOpenEditModal}
+        hideModal={hideEditModal}
+        actionEmployee={handleEditEmployee}
+      >
+        <EmployeeForm
+          title="Edit employee"
+          error={error}
+          onFinish={handleEditEmployee}
+          employee={existEmployeeData}
+          form={EditForm}
+        />
+      </ModalEmployee>
+
       <CustomButton
         type="primary"
-        onClick={showModal}
+        onClick={() => setIsOpenAddModal(true)}
         icon={<PlusCircleOutlined />}
       >
         Add employee
@@ -107,7 +141,12 @@ const EmployeesPage = () => {
         columns={columnsType}
         rowKey={(record) => record.id}
         onRow={(record) => {
-          return { onClick: () => navigate(`${Paths.employee}/${record.id}`) };
+          return {
+            onClick: () => {
+              setExistEmployeeData(record);
+              setIsOpenEditModal(true);
+            },
+          };
         }}
         rowClassName={styles.row}
       ></Table>

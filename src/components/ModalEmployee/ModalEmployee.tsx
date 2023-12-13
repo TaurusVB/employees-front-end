@@ -6,7 +6,7 @@ interface IModalEmployeeProps {
   hideModal: () => void;
   children: ReactNode;
   confirmLoading: boolean;
-  addEmployee: () => void;
+  actionEmployee: () => void;
 }
 
 const ModalEmployee: FC<IModalEmployeeProps> = ({
@@ -14,14 +14,14 @@ const ModalEmployee: FC<IModalEmployeeProps> = ({
   hideModal,
   children,
   confirmLoading,
-  addEmployee,
+  actionEmployee,
 }) => {
   return (
     <Modal
       confirmLoading={confirmLoading}
       centered
       open={isOpenModal}
-      onOk={addEmployee}
+      onOk={actionEmployee}
       onCancel={hideModal}
       okText="Add"
       cancelText="Cancel"
